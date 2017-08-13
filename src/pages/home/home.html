@@ -1,17 +1,43 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>Home</ion-title>
+<ion-header >
+  <ion-navbar color="dark">
+    <ion-title>Hola Milo</ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="logIn()" [hidden]="auth.authenticated" icon-left>
+        Ingresar
+      </button>
+      <button ion-button (click)="logOut()" [hidden]="!auth.authenticated" icon-right>
+        Salir
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+<ion-content>
+
+  <ion-card *ngFor="let post of lf.imgs">
+    <img [src]="post.img">
+    <ion-card-content>
+      <ion-card-title>{{post.title}}</ion-card-title>
+    </ion-card-content>
+    <ion-row>
+      <ion-col text-right>
+        <button ion-button clear small color="primary" icon-left (click)="share(post)">
+          <ion-icon name="ios-share-outline"></ion-icon>
+          Compartir
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" [enabled]='areTherePost'>
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <ion-fab bottom right [hidden]="!auth.authenticated">
+    <button ion-fab color="secondary" (click)="openModal()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+
 </ion-content>
